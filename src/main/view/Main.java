@@ -1,19 +1,47 @@
-package view;
+import controller.Controller;
+import data.*;
+import view.View;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Взять проект из первого дз и сделать рефакторинг в паттерне MVC
+ * Формат сдачи: ссылка на гитхаб проект
+ *
+ * Создать наследника реализованного класса ГорячийНапиток с
+ * дополнительным полем int температура.
+ * Создать класс ГорячихНапитковАвтомат реализующий интерфейс ТорговыйАвтомат
+ * и реализовать перегруженный метод getProduct(int name, int volume, int temperature),
+ * выдающий продукт соответствующий имени, объёму и температуре
+ * В main проинициализировать несколько ГорячихНапитков и ГорячихНапитковАвтомат
+ * и воспроизвести логику, заложенную в программе
+ * Всё вышеуказанное создать согласно принципам ООП, пройденным на семинаре*/
 public class Main {
     public static void main(String[] args) {
-        // Press Opt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        // Создадим модель - у нас это Кофе-машина
+        HotDrinkVendingMachine model  = new HotDrinkVendingMachine();
 
-        // Press Ctrl+R or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        // Создадим новое представление
+        View view = new View();
 
-            // Press Ctrl+D to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Cmd+F8.
-            System.out.println("i = " + i);
-        }
+        // свяжем модель(кофе-автомат) с представлением с помощью контроллера
+        Controller controller = new Controller(model, view);
+
+        // создадим несколько продуктов с помощью контроллера
+        controller.createDrink("Эспрессо", 200, 60);
+        controller.createDrink("Американо", 350, 70);
+        controller.createDrink("Каппучино", 300, 80);
+        controller.createDrink("Латте", 250, 65);
+
+        // выведем с помощью представления
+        view.printDetails(model.getProducts());
+
+        // поиск и вывод с помощью view
+        view.printFound("Латте", 250, 65, model);
+
+        // поиск продукта с помощью контроллера
+        controller.printFoudProduct("Латте", 25, 65);
     }
 }
